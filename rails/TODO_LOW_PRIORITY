@@ -7,3 +7,4 @@ and make sure we're getting the same session [?]
 test with 1.9
 could use one with rails 2.2
 
+one with very complex logic or a very large page would be a good test, too
