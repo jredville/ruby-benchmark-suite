@@ -46,6 +46,11 @@ Rails::Initializer.run do |config|
   # config.active_record.schema_format = :ruby
 
   # See Rails::Configuration for more options
+
+  # allow vendor/gems to work as expected
+  config.load_paths += Dir["#{RAILS_ROOT}/vendor/gems/**"].map do |dir|
+    File.directory?(lib = "#{dir}/lib") ? lib : dir
+  end
 end
 
 # Add new inflection rules using the following format
@@ -59,8 +64,8 @@ end
 
 # Include your application configuration below
 require 'rubygems'
-gem 'RedCloth'
-gem 'fastercsv'
+require 'RedCloth'
+require 'fastercsv'
 
 begin
   Preference.init_mail_settings()

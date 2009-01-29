@@ -50,7 +50,7 @@ task :run_one => :report do
   cd(dirname) do
     puts "Benchmarking #{benchmark}"
     puts "Report will be written to #{REPORT}"
-    `#{RUBY_VM} #{basename} #{ITERATIONS} #{TIMEOUT} #{MAIN_DIR}/#{REPORT}`
+    puts `#{RUBY_VM} #{basename} #{ITERATIONS} #{TIMEOUT} #{MAIN_DIR}/#{REPORT}`
   end
   puts "Report written in #{REPORT}"
 end

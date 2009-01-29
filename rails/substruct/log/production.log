@@ -2797,3 +2797,11 @@ Processing ContentNodesController#show_by_name (for 127.0.0.1 at 2009-01-28 18:1
 Rendering template within layouts/main
 Rendering content_nodes/show_by_name
 Completed in 0.00010 (10000 reqs/sec) | Rendering: 0.00000 (0%) | DB: 0.04600 (46000%) | 200 OK [http://www.example.com/]
+
+
+Processing ContentNodesController#show_by_name (for 127.0.0.1 at 2009-01-28 19:37:35) [GET]
+  Session ID: 0a14afc038051d5afa840be640412244
+  Parameters: {"name"=>"home", "action"=>"show_by_name", "controller"=>"content_nodes"}
+Rendering template within layouts/main
+Rendering content_nodes/show_by_name
+Completed in 0.34300 (2 reqs/sec) | Rendering: 0.03100 (9%) | DB: 0.06300 (18%) | 200 OK [http://localhost/]

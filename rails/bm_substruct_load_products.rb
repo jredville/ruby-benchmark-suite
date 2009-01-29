@@ -1,32 +1,21 @@
 require File.dirname(__FILE__) + '/../lib/benchutils'
-Dir.chdir 'substruct'
 
 label = File.expand_path(__FILE__).sub(File.expand_path("..") + "/", "")
 iterations = ARGV[-3].to_i
 timeout = ARGV[-2].to_i
 report = ARGV.last
 
-ENV['RAILS_ENV'] = 'production'
+require 'substruct_start_and_bootstrap_if_necessary.rb'
 
-     require(File.join(File.dirname(__FILE__), 'config', 'boot'))
+if Product.count != 2000
+  Product.destroy_all
+  2000.times { |n|
+       Product.create :name => "name", :code => n, :description => "bbc"*1000, :price => 0.5, :date_available => Time.now, :weight => 5
 
-     require 'rake'
-     require 'rake/testtask'
-     require 'rake/rdoctask'
-     require 'tasks/rails'
+       # ActiveRecord::Base.connection.execute("insert into items (type, name, code, description, price, weight, date_available) values ('Product', 'name', '#{n}', '#{'b'*500}', 3.0, 5, NOW())")
 
-     Rake::Task['db:drop'].invoke
-     Rake::Task['db:create'].invoke
-     Rake::Task['substruct:db:bootstrap'].invoke
-
-
-require 'config/environment'
-require 'application'
-require 'action_controller/request_profiler'
-
-1000.times { |n|
- Product.create :name => "name", :code => n
-}
+  }
+end
 
   benchmark = BenchmarkRunner.new(label, iterations, timeout)
   benchmark.run do

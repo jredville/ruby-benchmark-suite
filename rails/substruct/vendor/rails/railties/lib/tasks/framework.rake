@@ -11,7 +11,7 @@ namespace :rails do
         Gem.cache.find_name('rails', "= #{version}").first :
         Gem.cache.find_name('rails').sort_by { |g| g.version }.last
 
-      version ||= rails.version
+      version ||= rails.version if rails.respond_to? :version
 
       unless rails
         puts "No rails gem #{version} is installed.  Do 'gem list rails' to see what you have available."
