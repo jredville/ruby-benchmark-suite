@@ -353,7 +353,7 @@ end # substruct namespace
 
 def check_installed_gem(gem_name)
   begin
-    gem gem_name
+    require gem_name.gsub('-', '/')
   rescue Gem::LoadError
     puts 
     puts '!!! GEM LOAD ERROR'

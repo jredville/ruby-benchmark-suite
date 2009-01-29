@@ -6,22 +6,11 @@ iterations = ARGV[-3].to_i
 timeout = ARGV[-2].to_i
 report = ARGV.last
 
-ENV['RAILS_ENV'] = 'production'
-     require(File.join(File.dirname(__FILE__), 'config', 'boot'))
-
-     require 'rake'
-     require 'rake/testtask'
-     require 'rake/rdoctask'
-     require 'tasks/rails'
-
-     Rake::Task['db:drop'].invoke
-     Rake::Task['db:create'].invoke
-     Rake::Task['substruct:db:bootstrap'].invoke
-
-
+require 'substruct_start_and_bootstrap_if_necessary.rb'
 require 'config/environment'
 require 'application'
 require 'action_controller/request_profiler'
+
 ActionController::RequestProfiler.run(%w[-b -n1 request_root]) # warmup
 
   benchmark = BenchmarkRunner.new(label, iterations, timeout)

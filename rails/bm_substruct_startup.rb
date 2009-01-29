@@ -10,15 +10,6 @@ report = ARGV.last
 # If this is the case, feel free to remove the outer block that iterates over the array.
   benchmark = BenchmarkRunner.new(label, iterations, timeout)
   benchmark.run do
-     require(File.join(File.dirname(__FILE__), 'config', 'boot'))
-
-     require 'rake'
-     require 'rake/testtask'
-     require 'rake/rdoctask'
-     require 'tasks/rails'
-
-     Rake::Task['db:drop'].invoke
-     Rake::Task['db:create'].invoke
-     Rake::Task['substruct:db:bootstrap'].invoke
+    substruct_start_and_bootstrap_if_necessary.rb
   end
   File.open(report, "a") {|f| f.puts "#{benchmark.to_s},n/a" }
