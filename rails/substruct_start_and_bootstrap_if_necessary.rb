@@ -5,7 +5,7 @@ require 'config/environment'
 require 'application'
 
 begin
- Product # raising here means the DB doesn't exist
+ Product.first # raising here means the DB doesn't exist
 rescue Exception
      require 'rake'
      require 'rake/testtask'

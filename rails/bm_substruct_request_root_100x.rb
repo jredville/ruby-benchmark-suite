@@ -1,5 +1,4 @@
 require File.dirname(__FILE__) + '/../lib/benchutils'
-Dir.chdir 'substruct'
 
 label = File.expand_path(__FILE__).sub(File.expand_path("..") + "/", "")
 iterations = ARGV[-3].to_i
@@ -15,6 +14,6 @@ ActionController::RequestProfiler.run(%w[-b -n1 request_root]) # warmup
 
   benchmark = BenchmarkRunner.new(label, iterations, timeout)
   benchmark.run do
-    ActionController::RequestProfiler.run(%w[-b -n20 request_root])
+    ActionController::RequestProfiler.run(%w[-b -n100 request_root])
   end
   File.open(report, "a") {|f| f.puts "#{benchmark.to_s},n/a" }

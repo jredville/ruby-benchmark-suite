@@ -89,6 +89,9 @@ module ActionController
       puts 'Warming up once'
 
       elapsed = warmup(sandbox)
+      if(elapsed == 0.0)
+       elapsed = 0.0001
+      end
       puts '%.2f sec, %d requests, %d req/sec' % [elapsed, sandbox.request_count, sandbox.request_count / elapsed]
       puts "\n#{options[:benchmark] ? 'Benchmarking' : 'Profiling'} #{options[:n]}x"
 
@@ -108,6 +111,9 @@ module ActionController
     def benchmark(sandbox, profiling = false)
       sandbox.request_count = 0
       elapsed = sandbox.benchmark(options[:n], profiling).to_f
+      if elapsed == 0.0
+        elapsed = 0.0001
+      end
       count = sandbox.request_count.to_i
       puts '%.2f sec, %d requests, %d req/sec' % [elapsed, count, count / elapsed]
     end
