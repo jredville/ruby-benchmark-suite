@@ -1,10 +1,10 @@
-one with ab and concurrency :)
+one using ab and multiple concurrency :)
 
-could also do an index with lots of products, many navigation tags
+could also do more views than just the root [like an index with lots of products, many navigation tags]
 
-and make sure we're getting the same session [?]
+do tests that re-use a single session id, instead of recreating one each time, as it currently does [using ab?]
 
 test with 1.9
-could use one with rails 2.2
+could use a rails test with rails 2.2 or beyond
 
-one with very complex logic or a very large page would be a good test, too
+one with very complex logic or a very large page would be a good test
