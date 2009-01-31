@@ -8,3 +8,7 @@ test with 1.9
 could use a rails test with rails 2.2 or beyond
 
 one with very complex logic or a very large page would be a good test
+
+some requests with 'extra' RAM using garbage before the test
+
+add 'read a file 1000x' test.
