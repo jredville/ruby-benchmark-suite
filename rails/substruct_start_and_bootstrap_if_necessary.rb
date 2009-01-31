@@ -1,7 +1,12 @@
 Dir.chdir 'substruct'
 
 ENV['RAILS_ENV'] = 'production'
-require(File.join(File.dirname(__FILE__), 'substruct', 'config', 'boot'))
+if RUBY_PLATFORM =~ /mswin|mingw/
+  require(File.join(File.dirname(__FILE__), 'config', 'boot')) # windows weirdness
+else
+  require(File.join(File.dirname(__FILE__), 'substruct', 'config', 'boot'))
+end
+
 require 'config/environment'
 require 'application'
 
