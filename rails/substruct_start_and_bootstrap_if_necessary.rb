@@ -1,6 +1,7 @@
 Dir.chdir 'substruct'
+
 ENV['RAILS_ENV'] = 'production'
-require(File.join(File.dirname(__FILE__), 'config', 'boot'))
+require(File.join(File.dirname(__FILE__), 'substruct', 'config', 'boot'))
 require 'config/environment'
 require 'application'
 
