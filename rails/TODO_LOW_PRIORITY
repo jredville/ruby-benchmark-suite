@@ -16,3 +16,17 @@ some requests with 'extra' RAM using garbage before the test
 add 'read a file 1000x' test.
 
 There's a few more tests listed on the mailing list that could be included, and also luis' sudoku solver.
+
+research into this oddness [vlow prio--can you do bootstrap twice and it work?]:
+Benchmark Name,Time #1,Time #2,Time #3,Time #4,Time #5,Average Time,Standard Deviation,Input Size
+rails/bm_substruct_request_root_100x.rb,29.2190001010895,23.5629999637604,28.8429999351501,34.2660000324249,22.9370000362396,27.765600013732911,4.159461208625137,n/a
+
+C:\dev\ruby\ruby-benchmark-suite>cat 20090202122542_ruby.csv
+Report created on: Mon Feb 02 12:25:42 -0700 2009
+Ruby VM: ruby
+Iterations: 1
+
+Benchmark Name,Time #1,Average Time,Standard Deviation,Input Size
+rails/bm_substruct_request_root_100x.rb,12.6719999313354,12.671999931335449,0.000000000000000,n/a
+
+with a db:drop and [err and] recreate between them. huh?
