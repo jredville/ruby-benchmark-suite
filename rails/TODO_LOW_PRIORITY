@@ -11,3 +11,6 @@ could use a rails test with rails 2.2 or beyond
 one with very complex logic or a very large page would be a good test
 
 could make the startup time become 1/10th startup time.
+some requests with 'extra' RAM using garbage before the test
+
+add 'read a file 1000x' test.
