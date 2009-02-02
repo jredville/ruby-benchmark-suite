@@ -14,3 +14,5 @@ could make the startup time become 1/10th startup time.
 some requests with 'extra' RAM using garbage before the test
 
 add 'read a file 1000x' test.
+
+There's a few more tests listed on the mailing list that could be included, and also luis' sudoku solver.
