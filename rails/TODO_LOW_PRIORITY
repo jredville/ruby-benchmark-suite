@@ -1,10 +1,13 @@
 one using ab and multiple concurrency :)
 
-could also do more views than just the root [like an index with lots of products, many navigation tags]
+could also do more views than just the root [like an index with lots of products {"at least x"}, and many navigation tags]
 
-do tests that re-use a single session id, instead of recreating one each time, as it currently does [using ab?]
+do tests that re-use a single session id, instead of recreating one each time, as it currently does [using ab?] -- might be able to create a profile script that runs it 100x, instead of running the same profile script 100x
 
-test with 1.9
-could use a rails test with rails 2.2 or beyond
+test with 1.9/jruby to see if it works?
+
+could use a rails test with rails 2.2 or beyond 
 
 one with very complex logic or a very large page would be a good test
+
+could make the startup time become 1/10th startup time.
