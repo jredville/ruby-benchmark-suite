@@ -5,11 +5,13 @@ else
 end
 
 require 'benchmark'
+
 # attempt to use hitimes, if it exists
-require 'rubygems'
 begin
+ require 'rubygems'
  require 'hitimes'
- Benchmark.module_eval { def self.realtime; Hitimes::Interval.measure { yield }; end }
+ Benchmark.module_eval { def self.realtime; Hitimes::Interval.measure { yield }; end } if Hitimes::Interval.respond_to? :measure
+
 rescue LoadError
 end
 
@@ -23,6 +25,7 @@ class BenchmarkRunner
     @timeout = timeout
     @label = label
     @times = []
+    @rss = []
   end
   
   def each
@@ -32,18 +35,43 @@ class BenchmarkRunner
   def <=>(other)
     self.label <=> other.label
   end
+
+  def have_rss?
+   # always true for non-windows
+   return true unless RUBY_PLATFORM =~ /mswin|mingw/
+   begin
+    # for windows, use this
+    require 'rubygems'
+    require 'sys/proctable'
+    return true
+   rescue Exception
+   end
+   return false
+  end
+
+  def current_rss
+   if RUBY_PLATFORM =~ /mswin|mingw/
+      Sys::ProcTable.ps(Process.pid).working_set_size
+   else
+     # linux etc
+     stats = File.read "/proc/#{Process.pid}/status"
+     stats =~ /RSS:\s+(\d+)/ # attempt to parse it
+     $1
+   end
+  end
   
   def run
     begin
       Timeout.timeout(@timeout) do
         @iterations.times do
           @times << Benchmark.realtime { yield }
+          @rss << current_rss if have_rss? 
         end
       end
     rescue Timeout::Error
       @error = "Timeout: %.2f seconds" % (@timeout / @iterations.to_f)
     rescue Exception => e
-      @error = "Error: #{e.message}"
+      @error = "Error: #{e.message} #{e.class}"
     end          
   end
   
@@ -63,7 +91,7 @@ class BenchmarkRunner
     if @error
       "#{@label},#{@error}#{"," * (@iterations + 1)}"
     else
-      "#{@label},#{@times.join(',')},%.15f,%.15f" % [mean, standard_deviation]
+      "#{@label},#{@times.join(',')},%.15f,%.15f,#{@rss.join(',')}" % [mean, standard_deviation]
     end
   end
   
