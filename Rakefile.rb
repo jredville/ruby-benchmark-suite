@@ -15,7 +15,7 @@ RUBY_VM = ENV['RUBY_VM'] || "ruby"
 TIMEOUT =  (ENV['TIMEOUT'] || 300).to_i
 
 ITERATIONS = (ENV['ITERATIONS'] || 5).to_i
-
+VERBOSE = ENV['VERBOSE']
 report = "#{Time.now.strftime("%Y%m%d%H%M%S")}_#{RUBY_VM.gsub('/','').gsub('\\', '').gsub(':', '').split.first}.csv"
 REPORT = ENV['REPORT'] || report
 
@@ -27,7 +27,7 @@ MAIN_DIR = pwd
 
 # a friendly output on -T or --tasks
 if(ARGV.include?("-T") || ARGV.include?("--tasks"))
- puts "Optional options: [ITERATIONS=3] [RUBY_VM=\"/path/to/ruby opts\"] [TIMEOUT=secs] [REPORT=outputfile]"
+ puts "Optional options: [ITERATIONS=3] [RUBY_VM=\"/path/to/ruby opts\"] [TIMEOUT=secs] [REPORT=outputfile] [VERBOSE=true]"
 end
 
 task :default => [:run_all]
@@ -61,12 +61,24 @@ task :run_one => :report do
   puts 'ERROR: need to specify file, a la FILE="micro-benchmarks/bm_mergesort.rb"' unless benchmark
   basename = File.basename(benchmark)    
   puts "ERROR: non bm_ file specified" if basename !~ /^bm_.+\.rb$/
-  dirname = File.dirname(benchmark)
-  cd(dirname) do
-    puts "Benchmarking #{benchmark}"
-    puts "Report will be written to #{REPORT}"
-    `#{RUBY_VM} #{basename} #{ITERATIONS} #{TIMEOUT} #{MAIN_DIR}/#{REPORT}`
+  puts "Report will be written to #{REPORT}"
+  process_file benchmark
+  puts "Report written in #{REPORT}"
+end
+
+desc "Runs a directory worth of benchmarks; specify as DIR=micro-benchmarks"
+task :run_dir => :report do
+  dir = ENV['DIR']
+  puts 'ERROR: need to specify directory, a la DIR="micro-benchmarks/bm_mergesort.rb"' unless dir
+  puts "Report will be written to #{REPORT}"
+  all_files = []
+  Find.find('./' + dir) do |filename|
+    all_files << filename
   end
+
+  all_files.sort.each{|filename|
+    process_file filename
+  }
   puts "Report written in #{REPORT}"
 end
 
@@ -83,13 +95,7 @@ task :run_all => :report do
   end
 
   all_files.sort.each do |filename|
-    basename = File.basename(filename)    
-    next if basename !~ /^bm_.+\.rb$/
-    dirname = File.dirname(filename)
-    cd(dirname) do
-      puts "Benchmarking #{filename}"
-      `#{RUBY_VM} #{filename} #{ITERATIONS} #{TIMEOUT} #{MAIN_DIR}/#{REPORT}`
-    end
+	process_file filename
   end
   puts "-------------------------------"
   puts "Ruby Benchmark Suite completed"
@@ -97,6 +103,22 @@ task :run_all => :report do
 end
 
 private
+
+def process_file filename
+  basename = File.basename(filename)
+  return if basename !~ /^bm_.+\.rb$/  
+  dirname = File.dirname(filename)
+  cd(dirname) do
+    puts "Benchmarking #{filename}"
+    if(VERBOSE)
+      system("#{RUBY_VM} #{basename} #{ITERATIONS} #{TIMEOUT} #{MAIN_DIR}/#{REPORT}")
+    else
+      `#{RUBY_VM} #{basename} #{ITERATIONS} #{TIMEOUT} #{MAIN_DIR}/#{REPORT}`
+    end
+  end
+
+end
+
 
 def benchmark_startup
   benchmark = BenchmarkRunner.new("Startup", ITERATIONS, TIMEOUT)
