@@ -12,7 +12,9 @@ require 'application'
 
 begin
  Product.first # raising here means the DB doesn't exist
+ puts 'database appears initialized'
 rescue Exception
+     puts 'recreating database'
      require 'rake'
      require 'rake/testtask'
      require 'rake/rdoctask'

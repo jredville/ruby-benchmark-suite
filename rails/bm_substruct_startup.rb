@@ -9,12 +9,8 @@ report = ARGV.last
 # If this is the case, feel free to remove the outer block that iterates over the array.
   benchmark = BenchmarkRunner.new(label, iterations, timeout)
   # unfortunately there's no easy way to load the startup multiple times and have it work on windows, too
-  first_time_through_time =  nil
+  first_time_through_time = Benchmark.realtime {require 'substruct_start_and_bootstrap_if_necessary.rb'}
   benchmark.run do
-    if first_time_through_time
-      sleep  first_time_through_time
-    else
-       first_time_through_time = Benchmark.realtime {require 'substruct_start_and_bootstrap_if_necessary.rb'}
-    end
+      sleep first_time_through_time/10
   end
   File.open(report, "a") {|f| f.puts "#{benchmark.to_s},n/a" }
