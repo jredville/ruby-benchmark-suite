@@ -22,4 +22,6 @@ rescue Exception
      Rake::Task['db:create'].invoke
      Rake::Task['substruct:db:bootstrap'].invoke
 end
+Product.destroy_all
+Variation.destroy_all
 
