@@ -111,14 +111,13 @@ def process_file filename
   cd(dirname) do
     puts "Benchmarking #{filename}"
     if(VERBOSE)
-      system("#{RUBY_VM} #{basename} #{BARE_BONES} #{ITERATIONS} #{TIMEOUT} #{MAIN_DIR}/#{REPORT}")
+      system("#{RUBY_VM} #{basename} #{BARE_BONES} #{ITERATIONS} #{TIMEOUT} #{MAIN_DIR}/#{REPORT} 2>&1")
     else
-      `#{RUBY_VM} #{basename} #{BARE_BONES} #{ITERATIONS} #{TIMEOUT} #{MAIN_DIR}/#{REPORT}`
+      `#{RUBY_VM} #{basename} #{BARE_BONES} #{ITERATIONS} #{TIMEOUT} #{MAIN_DIR}/#{REPORT} 2>&1`
     end
   end
 
 end
-
 
 def benchmark_startup
 
