@@ -51,4 +51,10 @@ ADDITIONAL OPTIONS
 Currently the suite is setup to use the hitimes gem, if it is installed, for more accurate timing on windows/linux.
 Also if you want the RSS sizes to show up on windows you'll need to first install the sys-proctable gem.
 
+RAILS
+======
+A few rails tests are included, currently using rails v 2.1.  The substruct tests are based off a fresh install of http://code.google.com/p/substruct
+To run them you'll need to gem install mini_magick mime-types RedCloth mysql and have a working local mysql running with login root password blank.
+To see if it's working run rake run_dir rails DIR=rails VERBOSE=1
+
 The mailing list for the project is located at: http://groups.google.com/group/ruby-benchmark-suite
