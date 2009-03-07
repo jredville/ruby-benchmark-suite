@@ -4,13 +4,12 @@ class BogusTest < Test::Unit::TestCase
   def setup
     @gateway = BogusGateway.new(
       :login => 'bogus',
-      :password => 'bogus',
-      :test => true
+      :password => 'bogus'
     )
     
     @creditcard = credit_card('1')
     
-    @response = ActiveMerchant::Billing::Response.new(true, "Transaction successful", :transid => '1')
+    @response = ActiveMerchant::Billing::Response.new(true, "Transaction successful", :transid => BogusGateway::AUTHORIZATION)
   end
 
   def test_authorize
@@ -23,6 +22,10 @@ class BogusTest < Test::Unit::TestCase
 
   def test_credit
     @gateway.credit(1000, @response.params["transid"])
+  end
+
+  def test_void
+    @gateway.void(@response.params["transid"])
   end
   
   def  test_store

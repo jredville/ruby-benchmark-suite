@@ -9,7 +9,10 @@ RAILS_GEM_VERSION = '2.1.0' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
-
+ERROR_EMPTY  = 'Please fill in this field.'
+ERROR_NUMBER = 'Please enter only numbers (0-9) in this field.'
+require 'substruct'
+require 'substruct_deprecated'
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here
   
@@ -76,5 +79,8 @@ rescue
 end
 
 # Globals
+class ActiveRecord::Base
 ERROR_EMPTY  = 'Please fill in this field.'
 ERROR_NUMBER = 'Please enter only numbers (0-9) in this field.'
+end
+

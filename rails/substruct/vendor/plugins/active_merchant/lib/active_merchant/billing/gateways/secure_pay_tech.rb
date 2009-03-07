@@ -18,10 +18,7 @@ module ActiveMerchant #:nodoc:
         8 => "Bad or malformed request",
         9 => "Invalid card number"
       }
-      
-      attr_reader :response
-      attr_reader :options
-
+  
       self.default_currency = 'NZD'
       self.supported_countries = ['NZ']
       self.supported_cardtypes = [:visa, :master, :american_express, :diners_club]
@@ -86,17 +83,12 @@ module ActiveMerchant #:nodoc:
       end    
       
       def commit(action, post)
-        if result = test_result_from_cc_number(post[:CardNumber])
-          return result
-        end
+        response = parse( ssl_post(URL, post_data(action, post) ) )
 
-        data = ssl_post(URL, post_data(action, post))
-        response = parse(data)
-
-        success = (response[:result_code] == 1)
-        message = message_from(response)
-
-        Response.new(success, message, response, :test => test?, :authorization => response[:merchant_transaction_reference])
+        Response.new(response[:result_code] == 1, message_from(response), response, 
+          :test => test?, 
+          :authorization => response[:merchant_transaction_reference]
+        )
       end
 
       def message_from(result)
