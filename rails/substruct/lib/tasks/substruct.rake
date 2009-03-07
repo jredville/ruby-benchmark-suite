@@ -5,7 +5,7 @@ namespace :substruct do
     'OrderShippingWeight', 'OrderStatusCode', 'Right', 'Role', 'Tag', 'User'
   ]
   
-  SUBSTRUCT_BOOTSTRAP_PATH = 'vendor/plugins/substruct/db/bootstrap'
+  SUBSTRUCT_BOOTSTRAP_PATH = '/db/bootstrap'
   
   # MAINTENANCE ===============================================================
   
@@ -90,7 +90,7 @@ namespace :substruct do
       puts "Initializing database..."
       
       # Move our schema file into place so we can load it.
-      schema_file = File.join(RAILS_ROOT, 'vendor/plugins/substruct/db/schema.rb')
+      schema_file = 'schema.rb'
       FileUtils.cp(schema_file, File.join(RAILS_ROOT, 'db'))
     
       %w(
@@ -107,12 +107,8 @@ namespace :substruct do
       # because loading from bootstrap doesn't do it.
       #
       # Grab current schema version from the migration scripts.
-      schema_files = Dir.glob(File.join(RAILS_ROOT, 'vendor/plugins/substruct/db/migrate', '*'))
+      schema_files = Dir.glob(File.join(RAILS_ROOT, '/db/migrate', '*'))
       schema_version = File.basename(schema_files.sort.last).to_i
-      ActiveRecord::Base.connection.execute(%Q\
-        INSERT INTO plugin_schema_info
-        VALUES('substruct', #{schema_version});
-      \)
       
       puts '=' * 80
       puts
@@ -215,7 +211,7 @@ namespace :substruct do
       # Better here than having people do it via instructions on the site!
       #
       puts "Copying appropriate files..."
-      ss_dir = File.join(tmp_dir, 'vendor/plugins/substruct')      
+      ss_dir = File.join(tmp_dir, '')      
       # copy from ss config dir into real config
       config_dir = File.join(tmp_dir, 'config')
       FileUtils.cp(File.join(ss_dir, 'config', 'environment.rb'), config_dir)
@@ -312,7 +308,7 @@ namespace :substruct do
       # Other params.
       rcov_output = "-o \"#{RAILS_ROOT}/test/coverage/plugins/substruct/all\""
       rcov_lib = "-Ilib:test"
-      rcov_tests = FileList['vendor/plugins/substruct/test/{unit,integration,functional}/**/*_test.rb']
+      rcov_tests = FileList['/test/{unit,integration,functional}/**/*_test.rb']
       rcov_tests = rcov_tests.collect {|x| '"' + x + '"'}.to_s
       
       # Compose what will be run, and run it.
@@ -325,7 +321,7 @@ namespace :substruct do
   
   # Annotations =======================================================
 
-  require "#{RAILS_ROOT}/vendor/plugins/substruct/lib/substruct_annotation_extractor.rb"
+  require "#{RAILS_ROOT}//lib/substruct_annotation_extractor.rb"
   
   desc "Enumerate all annotations"
   task :notes do
